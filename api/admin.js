@@ -1,14 +1,15 @@
 const https = require('https');
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'changeme';
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
 
 function supabaseRequest(method, path, body) {
   return new Promise((resolve, reject) => {
     const bodyString = body ? JSON.stringify(body) : '';
     const bodyBuffer = Buffer.from(bodyString, 'utf8');
     const url = new URL(SUPABASE_URL);
+    const key = SUPABASE_SERVICE_KEY.trim();
 
     const options = {
       hostname: url.hostname,
@@ -16,8 +17,8 @@ function supabaseRequest(method, path, body) {
       method,
       headers: {
         'Content-Type': 'application/json',
-        'apikey': SUPABASE_SERVICE_KEY,
-        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+        'apikey': key,
+        'Authorization': `Bearer ${key}`,
         'Prefer': 'return=representation',
         'Content-Length': bodyBuffer.length,
       },
@@ -60,15 +61,14 @@ module.exports = async (req, res) => {
     if (action === 'list') {
       const result = await supabaseRequest('GET', 'profiles?select=email,is_premium,created_at&order=created_at.desc', null);
       const data = JSON.parse(result.body);
-      return res.status(200).json({ users: data });
+      return res.status(200).json({ users: Array.isArray(data) ? data : [] });
     }
 
     if (action === 'update') {
       if (!email) return res.status(400).json({ error: 'Email required' });
       const encoded = encodeURIComponent(email);
       const result = await supabaseRequest('PATCH', `profiles?email=eq.${encoded}`, { is_premium: !!is_premium });
-      const data = JSON.parse(result.body);
-      return res.status(200).json({ success: true, user: data[0] });
+      return res.status(200).json({ success: true });
     }
 
     return res.status(400).json({ error: 'Unknown action' });
