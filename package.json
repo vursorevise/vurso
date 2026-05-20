@@ -1,0 +1,8 @@
+{
+  "name": "revise-ai",
+  "version": "1.0.0",
+  "description": "Revise AI - Smart Study Assistant",
+  "dependencies": {
+    "stripe": "^14.0.0"
+  }
+}
