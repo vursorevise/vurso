@@ -10,14 +10,16 @@ module.exports = async (req, res) => {
   if (!apiKey) return res.status(500).json({ error: 'API key not configured' });
 
   try {
+    const bodyString = JSON.stringify(req.body);
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify(req.body),
+      body: bodyString,
     });
 
     const data = await response.json();
