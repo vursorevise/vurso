@@ -8,46 +8,52 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'Gemini API key not configured' });
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'Groq API key not configured' });
 
   try {
     const messages = req.body.messages || [];
-    let promptText = '';
 
-    for (const msg of messages) {
+    // Convert messages to plain text strings for Groq
+    const groqMessages = messages.map(msg => {
+      let text = '';
       if (Array.isArray(msg.content)) {
-        for (const part of msg.content) {
-          if (part.type === 'text') promptText += part.text + '\n';
-        }
-      } else if (typeof msg.content === 'string') {
-        promptText += msg.content + '\n';
+        text = msg.content.filter(p => p.type === 'text').map(p => p.text).join('\n');
+      } else {
+        text = msg.content || '';
       }
-    }
-
-    const geminiBody = JSON.stringify({
-      contents: [{ parts: [{ text: promptText.trim() }] }],
-      generationConfig: { maxOutputTokens: 1200, temperature: 0.7 }
+      return { role: msg.role === 'assistant' ? 'assistant' : 'user', content: text };
     });
 
-    const bodyBuffer = Buffer.from(geminiBody, 'utf8');
-    const path = `/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`;
+    const groqBody = JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: groqMessages,
+      max_tokens: 1200,
+      temperature: 0.7
+    });
+
+    const bodyBuffer = Buffer.from(groqBody, 'utf8');
 
     const result = await new Promise((resolve, reject) => {
       const options = {
-        hostname: 'generativelanguage.googleapis.com',
-        path,
+        hostname: 'api.groq.com',
+        path: '/openai/v1/chat/completions',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey,
           'Content-Length': bodyBuffer.length,
         },
       };
+
       const request = https.request(options, (response) => {
         const chunks = [];
         response.on('data', chunk => chunks.push(chunk));
-        response.on('end', () => resolve({ status: response.statusCode, body: Buffer.concat(chunks).toString('utf8') }));
+        response.on('end', () => {
+          resolve({ status: response.statusCode, body: Buffer.concat(chunks).toString('utf8') });
+        });
       });
+
       request.on('error', reject);
       request.write(bodyBuffer);
       request.end();
@@ -56,12 +62,15 @@ module.exports = async (req, res) => {
     const data = JSON.parse(result.body);
 
     if (result.status !== 200) {
-      console.error('Gemini error:', JSON.stringify(data));
-      return res.status(result.status).json({ error: data.error?.message || 'Gemini API error' });
+      console.error('Groq error:', JSON.stringify(data));
+      return res.status(result.status).json({ error: data.error?.message || 'Groq API error' });
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    res.status(200).json({ content: [{ type: 'text', text }] });
+    // Convert Groq response to Anthropic format so frontend works unchanged
+    const text = data.choices?.[0]?.message?.content || '';
+    res.status(200).json({
+      content: [{ type: 'text', text }]
+    });
 
   } catch (err) {
     console.error('Proxy error:', err);
