@@ -12,31 +12,26 @@ module.exports = async (req, res) => {
   if (!apiKey) return res.status(500).json({ error: 'Gemini API key not configured' });
 
   try {
-    // Convert Anthropic-style messages to Gemini format
     const messages = req.body.messages || [];
-    const geminiContents = messages.map(msg => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: Array.isArray(msg.content)
-        ? msg.content.map(c => {
-            if (c.type === 'text') return { text: c.text };
-            if (c.type === 'image') return {
-              inlineData: { mimeType: c.source.media_type, data: c.source.data }
-            };
-            return { text: '' };
-          })
-        : [{ text: msg.content }]
-    }));
+    let promptText = '';
+
+    for (const msg of messages) {
+      if (Array.isArray(msg.content)) {
+        for (const part of msg.content) {
+          if (part.type === 'text') promptText += part.text + '\n';
+        }
+      } else if (typeof msg.content === 'string') {
+        promptText += msg.content + '\n';
+      }
+    }
 
     const geminiBody = JSON.stringify({
-      contents: geminiContents,
-      generationConfig: {
-        maxOutputTokens: req.body.max_tokens || 1200,
-        temperature: 0.7,
-      }
+      contents: [{ parts: [{ text: promptText.trim() }] }],
+      generationConfig: { maxOutputTokens: 1200, temperature: 0.7 }
     });
 
     const bodyBuffer = Buffer.from(geminiBody, 'utf8');
-    const path = `/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const path = `/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const result = await new Promise((resolve, reject) => {
       const options = {
@@ -48,15 +43,11 @@ module.exports = async (req, res) => {
           'Content-Length': bodyBuffer.length,
         },
       };
-
       const request = https.request(options, (response) => {
         const chunks = [];
         response.on('data', chunk => chunks.push(chunk));
-        response.on('end', () => {
-          resolve({ status: response.statusCode, body: Buffer.concat(chunks).toString('utf8') });
-        });
+        response.on('end', () => resolve({ status: response.statusCode, body: Buffer.concat(chunks).toString('utf8') }));
       });
-
       request.on('error', reject);
       request.write(bodyBuffer);
       request.end();
@@ -65,15 +56,12 @@ module.exports = async (req, res) => {
     const data = JSON.parse(result.body);
 
     if (result.status !== 200) {
-      console.error('Gemini error:', data);
+      console.error('Gemini error:', JSON.stringify(data));
       return res.status(result.status).json({ error: data.error?.message || 'Gemini API error' });
     }
 
-    // Convert Gemini response back to Anthropic format so frontend works unchanged
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    res.status(200).json({
-      content: [{ type: 'text', text }]
-    });
+    res.status(200).json({ content: [{ type: 'text', text }] });
 
   } catch (err) {
     console.error('Proxy error:', err);
