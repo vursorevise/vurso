@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revise AI — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root[data-theme="dark"]{--bg:#0e0e11;--surface:#16161a;--surface2:#1e1e24;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--text:#f0efe8;--muted:#8a8a96}
+:root{--accent:#7c5cfc;--green:#22c55e;--red:#ef4444;--ff:'DM Sans',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem}
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:2rem;width:100%;max-width:700px;margin-bottom:1.5rem}
+h1{font-size:1.5rem;font-weight:600;margin-bottom:4px}
+p{color:var(--muted);font-size:13px;margin-bottom:1.5rem}
+.logo{font-size:1.6rem;font-weight:700;color:var(--accent);margin-bottom:1.5rem;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px;font-weight:500}
+input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:10px 13px;color:var(--text);font-family:var(--ff);font-size:14px;margin-bottom:12px}
+input:focus{outline:none;border-color:var(--accent)}
+input[type=password]{letter-spacing:.1em}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-family:var(--ff);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;width:100%}
+.btn:hover{background:#6a4ef0}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn.secondary:hover{border-color:var(--border2)}
+.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:10px 13px;font-size:13px;color:var(--red);margin-bottom:12px;display:none}
+.err.show{display:block}
+.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:10px 13px;font-size:13px;color:var(--green);margin-bottom:12px;display:none}
+.success.show{display:block}
+.section-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.user-row{display:flex;align-items:center;justify-content:space-between;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;margin-bottom:6px;gap:10px;flex-wrap:wrap}
+.user-email{font-size:14px;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-status{font-size:11px;border-radius:999px;padding:3px 10px;font-weight:600;flex-shrink:0}
+.status-pro{background:rgba(34,197,94,.12);color:var(--green)}
+.status-free{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
+.user-actions{display:flex;gap:6px;flex-shrink:0}
+.tbtn{border:none;border-radius:7px;padding:5px 12px;font-family:var(--ff);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.tbtn.make-pro{background:rgba(34,197,94,.15);color:var(--green)}
+.tbtn.make-pro:hover{background:rgba(34,197,94,.25)}
+.tbtn.make-free{background:rgba(239,68,68,.12);color:var(--red)}
+.tbtn.make-free:hover{background:rgba(239,68,68,.22)}
+.empty{text-align:center;padding:2rem;color:var(--muted);font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem}
+.stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.stat-val{font-size:24px;font-weight:700;color:var(--text)}
+.stat-label{font-size:11px;color:var(--muted);margin-top:3px}
+.search{margin-bottom:12px}
+#login-section{}
+#admin-section{display:none}
+.spin{width:20px;height:20px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="logo"><span class="dot"></span>Revise AI Admin</div>
+
+<!-- LOGIN -->
+<div class="card" id="login-section">
+  <h1>Admin Login</h1>
+  <p>Enter your admin password to manage users</p>
+  <div class="err" id="login-err"></div>
+  <label>Admin Password</label>
+  <input type="password" id="admin-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+  <button class="btn" onclick="login()">Sign In</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div style="width:100%;max-width:700px" id="admin-section">
+
+  <!-- STATS -->
+  <div class="stats" id="stats-row">
+    <div class="stat"><div class="stat-val" id="stat-total">—</div><div class="stat-label">Total Users</div></div>
+    <div class="stat"><div class="stat-val" id="stat-pro" style="color:var(--green)">—</div><div class="stat-label">Pro Users</div></div>
+    <div class="stat"><div class="stat-val" id="stat-free" style="color:var(--muted)">—</div><div class="stat-label">Free Users</div></div>
+  </div>
+
+  <!-- QUICK TOGGLE -->
+  <div class="card">
+    <div class="section-title">Quick Toggle User</div>
+    <div class="err" id="toggle-err"></div>
+    <div class="success" id="toggle-success"></div>
+    <label>User Email</label>
+    <input type="email" id="toggle-email" placeholder="student@example.com">
+    <div class="row">
+      <button class="btn" onclick="setUser(true)" style="background:var(--green)">⭐ Make Pro</button>
+      <button class="btn" onclick="setUser(false)" style="background:var(--surface2);color:var(--text);border:1px solid var(--border)">Remove Pro</button>
+    </div>
+  </div>
+
+  <!-- USER LIST -->
+  <div class="card">
+    <div class="section-title">All Users</div>
+    <input class="search" type="text" id="search" placeholder="Search by email…" oninput="filterUsers(this.value)">
+    <div id="user-list"><div class="empty">Loading users…</div></div>
+    <button class="btn secondary" style="margin-top:12px" onclick="loadUsers()">↻ Refresh</button>
+  </div>
+
+</div>
+
+<script>
+let adminPw = '';
+let allUsers = [];
+
+async function login() {
+  const pw = document.getElementById('admin-pw').value;
+  const err = document.getElementById('login-err');
+  err.classList.remove('show');
+  if (!pw) { err.textContent = 'Please enter a password'; err.classList.add('show'); return; }
+
+  const btn = document.querySelector('#login-section .btn');
+  btn.innerHTML = '<span class="spin"></span>Signing in…'; btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw, action: 'list' })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Invalid password');
+    adminPw = pw;
+    allUsers = data.users || [];
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('admin-section').style.display = 'block';
+    renderUsers(allUsers);
+    updateStats(allUsers);
+  } catch(e) {
+    err.textContent = e.message; err.classList.add('show');
+  }
+  btn.innerHTML = 'Sign In'; btn.disabled = false;
+}
+
+async function loadUsers() {
+  try {
+    const res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPw, action: 'list' })
+    });
+    const data = await res.json();
+    allUsers = data.users || [];
+    renderUsers(allUsers);
+    updateStats(allUsers);
+  } catch(e) {}
+}
+
+async function setUser(isPro) {
+  const email = document.getElementById('toggle-email').value.trim();
+  const err = document.getElementById('toggle-err');
+  const suc = document.getElementById('toggle-success');
+  err.classList.remove('show'); suc.classList.remove('show');
+  if (!email) { err.textContent = 'Please enter an email'; err.classList.add('show'); return; }
+
+  try {
+    const res = await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPw, action: 'update', email, is_premium: isPro })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    suc.textContent = `✓ ${email} is now ${isPro ? 'Pro ⭐' : 'Free'}`;
+    suc.classList.add('show');
+    document.getElementById('toggle-email').value = '';
+    loadUsers();
+  } catch(e) {
+    err.textContent = e.message; err.classList.add('show');
+  }
+}
+
+async function toggleUser(email, isPro) {
+  try {
+    await fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: adminPw, action: 'update', email, is_premium: isPro })
+    });
+    loadUsers();
+  } catch(e) {}
+}
+
+function updateStats(users) {
+  const pro = users.filter(u => u.is_premium).length;
+  document.getElementById('stat-total').textContent = users.length;
+  document.getElementById('stat-pro').textContent = pro;
+  document.getElementById('stat-free').textContent = users.length - pro;
+}
+
+function filterUsers(q) {
+  const filtered = allUsers.filter(u => u.email?.toLowerCase().includes(q.toLowerCase()));
+  renderUsers(filtered);
+}
+
+function renderUsers(users) {
+  const list = document.getElementById('user-list');
+  if (!users.length) { list.innerHTML = '<div class="empty">No users found</div>'; return; }
+  list.innerHTML = users.map(u => `
+    <div class="user-row">
+      <div class="user-email">${u.email || 'Unknown'}</div>
+      <span class="user-status ${u.is_premium ? 'status-pro' : 'status-free'}">${u.is_premium ? '⭐ Pro' : 'Free'}</span>
+      <div class="user-actions">
+        ${u.is_premium
+          ? `<button class="tbtn make-free" onclick="toggleUser('${u.email}',false)">Remove Pro</button>`
+          : `<button class="tbtn make-pro" onclick="toggleUser('${u.email}',true)">Make Pro ⭐</button>`
+        }
+      </div>
+    </div>`).join('');
+}
+
+document.getElementById('admin-pw').focus();
+</script>
+</body>
+</html>
