@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Revise AI — Smart Study Assistant</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -14,7 +14,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff);font-size:15px
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
 /* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;gap:10px}
+nav.topnav{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100;gap:10px}
 .logo{font-family:var(--fd);font-size:1.4rem;display:flex;align-items:center;gap:7px;flex-shrink:0}
 .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
 .nav-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
@@ -22,19 +22,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.85rem
 .nbtn:hover{color:var(--text);border-color:var(--border2)}
 .nbtn.accent{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
 .nbtn.accent:hover{background:#6a4ef0}
-.pro-badge{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:.02em}
+.pro-badge{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700}
 .free-pill{background:var(--surface2);border:1px solid var(--border2);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted)}
 .free-pill b{color:var(--red)}
 
-/* LAYOUT */
+/* DESKTOP LAYOUT */
 .app{display:grid;grid-template-columns:268px 1fr;height:calc(100vh - 54px)}
 .sidebar{border-right:1px solid var(--border);overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:1rem}
 .sh3{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
 
-/* FREE TIER BANNER in sidebar */
+/* FREE BANNER */
 .free-banner{background:linear-gradient(135deg,rgba(124,92,252,.15),rgba(245,158,11,.1));border:1px solid rgba(124,92,252,.3);border-radius:11px;padding:11px 13px;cursor:pointer;transition:all .15s}
 .free-banner:hover{border-color:var(--accent)}
-.free-banner h4{font-size:13px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.free-banner h4{font-size:13px;font-weight:600;margin-bottom:4px}
 .free-banner p{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:8px}
 .free-banner .upgrade-cta{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:6px 12px;font-family:var(--ff);font-size:12px;font-weight:600;cursor:pointer;width:100%;transition:all .15s}
 .free-banner .upgrade-cta:hover{background:#6a4ef0}
@@ -103,26 +103,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:.85rem
 .ipanel h2{font-family:var(--fd);font-size:1.4rem;font-weight:400;margin-bottom:2px}
 .ipanel h2 em{color:var(--accent);font-style:italic}
 .ipanel p{color:var(--muted);font-size:13px;margin-bottom:.65rem}
-
 .upload-row{display:flex;gap:6px;margin-bottom:7px;flex-wrap:wrap}
-.upbtn{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:var(--ff);font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;position:relative}
+.upbtn{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:var(--ff);font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s}
 .upbtn:hover{border-color:var(--border2);color:var(--text)}
-.upbtn .lock{font-size:10px;color:#f59e0b}
 textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;color:var(--text);font-family:var(--ff);font-size:14px;line-height:1.7;resize:none;height:110px;transition:border-color .15s}
 textarea::placeholder{color:var(--muted)}
 textarea:focus{outline:none;border-color:var(--accent)}
-
 .action-row{display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap}
 .gen-btn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-family:var(--ff);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:7px}
 .gen-btn:hover{background:#6a4ef0;transform:translateY(-1px)}
 .gen-btn:active{transform:none}
 .gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .ccount{font-size:12px;color:var(--muted);margin-left:auto}
-
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;align-items:center}
 .chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s}
 .chip:hover{border-color:var(--border2);color:var(--text)}
-
 .upload-status{display:none;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--muted);align-items:center;gap:10px;margin-bottom:7px}
 .upload-status .spin{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
 
@@ -132,7 +127,6 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .empty-icon{font-size:36px;opacity:.2}
 .empty h3{font-family:var(--fd);font-size:1.2rem;font-weight:400;opacity:.35}
 .empty p{font-size:13px;color:var(--muted);max-width:280px;opacity:.6}
-
 .rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px}
 .rh h2{font-family:var(--fd);font-size:1.2rem;font-weight:400}
 .tag{display:inline-block;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 9px;font-size:11px;color:var(--muted);margin-right:4px}
@@ -148,8 +142,6 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .flabel{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .fq{font-size:14px;font-weight:500;margin-bottom:8px}
 .fa{font-size:13px;color:var(--muted);background:var(--surface2);border-radius:7px;padding:8px 10px;border-left:2px solid var(--accent);line-height:1.6}
-
-/* SR CONTROLS */
 .src{display:flex;gap:5px;margin-top:9px}
 .srcb{flex:1;border:none;border-radius:7px;padding:6px 4px;font-family:var(--ff);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
 .srcb.h{background:rgba(239,68,68,.12);color:var(--red)}
@@ -177,7 +169,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .qexp{background:var(--surface2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:9px;padding:9px 11px;font-size:13px;color:var(--muted);margin-top:8px;display:none;line-height:1.7}
 .qexp.show{display:block}
 
-/* ESSAY/SUMMARY */
+/* ESSAY */
 .ewrap{max-width:640px;display:flex;flex-direction:column;gap:9px}
 .fcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .fh{padding:11px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -195,22 +187,22 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .sbar-fill{height:5px;border-radius:3px;background:var(--accent);transition:width .8s}
 .sbar-val{font-size:12px;color:var(--muted);width:28px;text-align:right;flex-shrink:0}
 
-/* LOADING */
-.lwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;gap:12px}
-.spin{width:30px;height:30px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
-.lwrap p{font-size:13px;color:var(--muted)}
-@keyframes spin{to{transform:rotate(360deg)}}
-
 /* SAVE BTN */
 .save-set-btn{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:var(--ff);font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;margin-bottom:10px}
 .save-set-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-/* SRS HEADER */
+/* SRS BAR */
 .srs-bar{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
 .srs-stats{display:flex;gap:16px}
 .srs-stat{text-align:center}
 .srs-sv{font-size:18px;font-family:var(--fd)}
 .srs-sl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+/* LOADING */
+.lwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;gap:12px}
+.spin{width:30px;height:30px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+.lwrap p{font-size:13px;color:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 /* MODALS */
 .overlay{position:fixed;inset:0;background:var(--overlay);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
@@ -231,17 +223,9 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .mswitch a{color:var(--accent);cursor:pointer;font-weight:500}
 .merr{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 12px;font-size:13px;color:var(--red);margin-bottom:11px;display:none}
 .merr.show{display:block}
-
-/* PAYWALL MODAL */
 .pw-price{text-align:center;background:var(--al);border:1px solid rgba(124,92,252,.25);border-radius:12px;padding:1.25rem;margin-bottom:1.1rem}
 .pw-price .price{font-family:var(--fd);font-size:2.8rem;color:var(--accent);line-height:1}
 .pw-price .period{font-size:13px;color:var(--muted);margin-top:3px}
-.pw-features{list-style:none;margin-bottom:1.1rem;display:flex;flex-direction:column;gap:7px}
-.pw-features li{display:flex;align-items:center;gap:9px;font-size:14px}
-.pw-features li .tick{width:20px;height:20px;background:rgba(34,197,94,.15);color:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-.pw-free-note{font-size:12px;color:var(--muted);text-align:center;margin-bottom:1rem;padding:8px 12px;background:var(--surface2);border-radius:8px}
-
-/* COMPARISON TABLE */
 .compare{width:100%;border-collapse:collapse;margin-bottom:1.1rem;font-size:13px}
 .compare th{padding:6px 10px;text-align:left;color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border)}
 .compare td{padding:8px 10px;border-bottom:1px solid var(--border)}
@@ -251,8 +235,6 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .compare .check{color:var(--green)}
 .compare .cross{color:var(--red)}
 .compare .dim{color:var(--muted);font-size:12px}
-
-/* SETTINGS */
 .srow{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
 .srow:last-child{border-bottom:none}
 .slabel{font-size:14px}
@@ -269,16 +251,107 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-color:rgba(34,197,94,.4)}
 .toast.error{border-color:rgba(239,68,68,.4)}
-
 .fade-in{animation:fi .3s ease}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* BOTTOM NAV */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border2);padding:.4rem 0 calc(.4rem + env(safe-area-inset-bottom));z-index:200;justify-content:space-around;align-items:center}
+.bnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:5px 8px;color:var(--muted);font-family:var(--ff);font-size:10px;font-weight:500;border-radius:10px;transition:all .15s;min-width:52px}
+.bnav-btn.active{color:var(--accent)}
+.bnav-btn .bicon{font-size:19px;line-height:1}
+
+/* MOBILE DRAWER */
+.mob-drawer{display:none;position:fixed;inset:0;z-index:300}
+.mob-drawer.open{display:block}
+.mob-drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
+.mob-drawer-panel{position:absolute;left:0;top:0;bottom:0;width:85%;max-width:320px;background:var(--surface);overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;transform:translateX(-100%);transition:transform .25s ease}
+.mob-drawer.open .mob-drawer-panel{transform:translateX(0)}
+.mob-drawer-close{display:flex;align-items:center;justify-content:space-between;margin-bottom:.25rem}
+.mob-drawer-close button{background:var(--surface2);border:1px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;color:var(--muted);font-size:16px;display:flex;align-items:center;justify-content:center}
+
+/* TABLET (sidebar collapses to narrower) */
+@media(max-width:1024px) and (min-width:769px){
+  .app{grid-template-columns:220px 1fr}
+  .sbtn{font-size:10px;padding:6px 3px}
+  .scat-grid{grid-template-columns:1fr 1fr}
+  .ipanel{padding:1rem 1.25rem .85rem}
+  .cgrid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  #upgrade-nav-btn{display:none!important}
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .app{grid-template-columns:1fr;height:auto}
+  .sidebar{display:none}
+  .main{height:auto;overflow:visible}
+  .rpanel{min-height:40vh;padding:.9rem 1rem;overflow:visible}
+  nav.topnav{padding:.65rem 1rem}
+  .logo{font-size:1.15rem}
+  #upgrade-nav-btn{display:none!important}
+  #nav-usage{display:none!important}
+  .ipanel{padding:.9rem 1rem .75rem}
+  .ipanel h2{font-size:1.15rem}
+  .ipanel>p{display:none}
+  textarea{height:100px;font-size:15px;border-radius:10px}
+  .upload-row{gap:5px}
+  .upbtn{font-size:11px;padding:5px 9px}
+  .upbtn .lock{display:none}
+  .gen-btn{width:100%;justify-content:center;padding:13px;font-size:15px;border-radius:11px}
+  .action-row{flex-direction:column;gap:7px}
+  .ccount{margin-left:0;align-self:flex-end}
+  .chips{display:none}
+  .cgrid{grid-template-columns:1fr}
+  .qwrap,.ewrap{max-width:100%}
+  .fc{padding:.9rem}
+  .src{gap:4px}
+  .srcb{font-size:11px;padding:8px 3px}
+  .overlay{align-items:flex-end;padding:0}
+  .modal{border-radius:20px 20px 0 0;max-height:90vh;padding:1.5rem 1.25rem}
+  .bottom-nav{display:flex}
+  .rh{flex-direction:column;align-items:flex-start;gap:5px}
+  .toast{bottom:80px;right:1rem;left:1rem;max-width:100%}
+  body{padding-bottom:68px}
+  .qq{padding:1rem}
+  .qq h3{font-size:1rem}
+  .qopt{padding:10px 11px;font-size:14px}
+  .fb{padding:.9rem 1rem}
+}
 </style>
 </head>
 <body>
-
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- BOTTOM NAV (mobile only) -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bnav-btn active" id="bnav-home" onclick="mobileTab('home')">
+    <span class="bicon">✦</span>Study
+  </button>
+  <button class="bnav-btn" id="bnav-modes" onclick="mobileTab('modes')">
+    <span class="bicon">🎯</span>Modes
+  </button>
+  <button class="bnav-btn" id="bnav-subjects" onclick="mobileTab('subjects')">
+    <span class="bicon">📚</span>Subjects
+  </button>
+  <button class="bnav-btn" id="bnav-saved" onclick="mobileTab('saved')">
+    <span class="bicon">💾</span>Saved
+  </button>
+  <button class="bnav-btn" id="bnav-account" onclick="mobileTab('account')">
+    <span class="bicon">👤</span>Account
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mob-drawer" id="mob-drawer">
+  <div class="mob-drawer-bg" onclick="closeMobDrawer()"></div>
+  <div class="mob-drawer-panel">
+    <div class="mob-drawer-close">
+      <div class="logo"><span class="logo-dot"></span>Revise AI</div>
+      <button onclick="closeMobDrawer()">✕</button>
+    </div>
+    <div id="mob-drawer-content"></div>
+  </div>
+</div>
 <!-- AUTH MODAL -->
 <div class="overlay hidden" id="m-auth">
 <div class="modal">
@@ -384,8 +457,8 @@ textarea:focus{outline:none;border-color:var(--accent)}
 </div>
 
 <!-- NAV -->
-<nav>
-  <div class="logo"><span class="logo-dot"></span>Revise</div>
+<nav class="topnav">
+  <div class="logo"><span class="logo-dot"></span>Revise AI</div>
   <div class="nav-right">
     <span id="nav-usage" style="display:none"></span>
     <span id="nav-badge"></span>
@@ -398,15 +471,6 @@ textarea:focus{outline:none;border-color:var(--accent)}
 <div class="app">
   <!-- SIDEBAR -->
   <aside class="sidebar">
-
-    <!-- PRO UPGRADE BANNER (shown to free users) -->
-    <div class="free-banner" id="pro-banner" onclick="openPaywall('banner')">
-      <h4>⭐ Upgrade to Pro</h4>
-      <div class="usage-bar-bg"><div class="usage-bar-fill" id="usage-fill" style="width:0%"></div></div>
-      <p id="banner-txt">3 free generations per day. Upgrade for unlimited access, saving, spaced repetition, PDF uploads and more.</p>
-      <button class="upgrade-cta" onclick="event.stopPropagation();openPaywall('banner')">Upgrade — £4.99/mo</button>
-    </div>
-
     <div>
       <div class="sh3">Level</div>
       <div class="level-toggle">
@@ -414,26 +478,28 @@ textarea:focus{outline:none;border-color:var(--accent)}
         <button class="lvl-btn active" onclick="setLevel('A-Level',this)">A-Level</button>
       </div>
     </div>
-
     <div>
       <div class="sh3">Subject</div>
       <input class="subj-search" type="text" id="subj-search" placeholder="Search subjects…" oninput="renderSubjs(this.value)">
       <div class="subj-cats" id="subj-cats"></div>
     </div>
-
     <div>
       <div class="sh3">Exam Board</div>
       <select class="esel" id="esel" onchange="examBoard=this.value;document.getElementById('sp-board').textContent=this.value">
         <option>AQA</option><option>Edexcel</option><option>OCR</option><option>WJEC</option><option>Cambridge (CAIE)</option><option>Eduqas</option>
       </select>
     </div>
-
     <div class="sel-pill">
       <span class="sp-level" id="sp-level">A-Level</span><span class="sp-sep">·</span>
       <span class="sp-sub" id="sp-sub">Biology</span><span class="sp-sep">·</span>
       <span class="sp-board" id="sp-board">AQA</span>
     </div>
-
+    <div class="free-banner" id="pro-banner" onclick="openPaywall('banner')">
+      <h4>⭐ Upgrade to Pro</h4>
+      <div class="usage-bar-bg"><div class="usage-bar-fill" id="usage-fill" style="width:0%"></div></div>
+      <p id="banner-txt">3 free generations per day.</p>
+      <button class="upgrade-cta" onclick="event.stopPropagation();openPaywall('banner')">Upgrade — £4.99/mo</button>
+    </div>
     <div>
       <div class="sh3">Study Mode</div>
       <div class="mode-list">
@@ -452,12 +518,10 @@ textarea:focus{outline:none;border-color:var(--accent)}
         </button>
       </div>
     </div>
-
     <div>
       <div class="sh3">Saved Sets <span id="save-lock" style="font-size:10px;color:var(--amber);font-weight:600;margin-left:4px">PRO</span></div>
-      <div class="sets-list" id="sets-list"><div class="empty-sets" id="sets-empty">Sign in &amp; upgrade to save sets</div></div>
+      <div class="sets-list" id="sets-list"><div class="empty-sets">Sign in & upgrade to save sets</div></div>
     </div>
-
     <div>
       <div class="sh3">Session Stats</div>
       <div class="stats-row">
@@ -465,7 +529,6 @@ textarea:focus{outline:none;border-color:var(--accent)}
         <div class="scard"><div class="scard-val" id="stat-quiz">0</div><div class="scard-label">Questions done</div></div>
       </div>
     </div>
-
   </aside>
 
   <!-- MAIN -->
@@ -473,7 +536,6 @@ textarea:focus{outline:none;border-color:var(--accent)}
     <div class="ipanel">
       <h2>Paste your notes, <em>get smarter.</em></h2>
       <p>Add text, upload a PDF, or take a photo of your notes</p>
-
       <div class="upload-row">
         <label class="upbtn" id="pdf-lbl" onclick="checkProFeature(event,'upload')">
           📎 Upload PDF / Image <span class="lock" id="pdf-lock">⭐</span>
@@ -484,11 +546,8 @@ textarea:focus{outline:none;border-color:var(--accent)}
           <input type="file" id="img-input" accept="image/*" capture="environment" style="display:none" onchange="handleFile(this)">
         </label>
       </div>
-
       <div class="upload-status" id="upstatus"><div class="spin"></div><span id="upmsg">Extracting text…</span></div>
-
       <textarea id="notes" placeholder="e.g. The cell cycle consists of interphase and mitotic phase…"></textarea>
-
       <div class="chips">
         <span style="font-size:11px;color:var(--muted);padding:4px 0">Try a sample:</span>
         <span class="chip" onclick="loadSample('bio')">Cell Division</span>
@@ -498,13 +557,11 @@ textarea:focus{outline:none;border-color:var(--accent)}
         <span class="chip" onclick="loadSample('psych')">Memory Models</span>
         <span class="chip" onclick="loadSample('econ')">Supply & Demand</span>
       </div>
-
       <div class="action-row">
         <button class="gen-btn" id="gen-btn" onclick="generate()"><span id="gen-txt">✦ Generate</span></button>
         <span class="ccount" id="ccount">0 characters</span>
       </div>
     </div>
-
     <div class="rpanel" id="results">
       <div class="empty">
         <div class="empty-icon">✦</div>
@@ -516,6 +573,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 </div>
 
 <script>
+
 // ─── CONFIG ────────────────────────────────────────────────────────────────
 const SB_URL  = 'https://mdzclrqiqpejigzbwymj.supabase.co';
 const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kemNscnFpcXBlamlnemJ3eW1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODEyMTYsImV4cCI6MjA5NDc1NzIxNn0.34v6CA7H-UxpQyg0So_gSH9uCthtAeOZ42Tf_RJwClg';
@@ -1201,6 +1259,149 @@ function toast(msg,type='success'){
   clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
+// ─── MOBILE NAV ──────────────────────────────────────────────────────────────
+function mobileTab(tab) {
+  // Update active state
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('bnav-'+tab);
+  if (btn) btn.classList.add('active');
+
+  if (tab === 'home') { closeMobDrawer(); return; }
+
+  const panel = document.getElementById('mob-drawer-content');
+
+  if (tab === 'subjects') {
+    panel.innerHTML = `
+      <div class="sh3">Level</div>
+      <div class="level-toggle" style="margin-bottom:1rem">
+        <button class="lvl-btn${level==='GCSE'?' active':''}" onclick="setLevel('GCSE',this);renderMobSubjects()">GCSE</button>
+        <button class="lvl-btn${level==='A-Level'?' active':''}" onclick="setLevel('A-Level',this);renderMobSubjects()">A-Level</button>
+      </div>
+      <div class="sh3">Exam Board</div>
+      <select class="esel" style="margin-bottom:1rem" onchange="examBoard=this.value;document.getElementById('sp-board').textContent=this.value">
+        <option${examBoard==='AQA'?' selected':''}>AQA</option>
+        <option${examBoard==='Edexcel'?' selected':''}>Edexcel</option>
+        <option${examBoard==='OCR'?' selected':''}>OCR</option>
+        <option${examBoard==='WJEC'?' selected':''}>WJEC</option>
+        <option${examBoard==='Cambridge (CAIE)'?' selected':''}>Cambridge (CAIE)</option>
+        <option${examBoard==='Eduqas'?' selected':''}>Eduqas</option>
+      </select>
+      <div class="sh3">Subject</div>
+      <input class="subj-search" type="text" placeholder="Search subjects..." oninput="renderMobSubjects(this.value)" style="margin-bottom:8px">
+      <div id="mob-subj-cats"></div>`;
+    renderMobSubjects();
+    openMobDrawer();
+  }
+
+  if (tab === 'modes') {
+    panel.innerHTML = `
+      <div class="sh3">Study Mode</div>
+      <div class="mode-list">
+        <button class="mbtn${mode==='flashcards'?' active':''}" onclick="setMode('flashcards',this);closeMobDrawer();document.getElementById('bnav-home').click()">
+          <span class="micon">🃏</span><div><div class="mlabel">Flashcards</div><div class="msub">Q&A from your notes</div></div>
+        </button>
+        <button class="mbtn${mode==='quiz'?' active':''}" onclick="setMode('quiz',this);closeMobDrawer();document.getElementById('bnav-home').click()">
+          <span class="micon">🎯</span><div><div class="mlabel">Practice Quiz</div><div class="msub">MCQs with explanations</div></div>
+        </button>
+        <button class="mbtn${mode==='essay'?' active':''}" onclick="handleProMode('essay',this);closeMobDrawer()">
+          <span class="micon">✍️</span><div><div class="mlabel">Essay Feedback</div><div class="msub">Mark scheme analysis</div></div>
+          <span class="pro-lock">PRO</span>
+        </button>
+        <button class="mbtn${mode==='summary'?' active':''}" onclick="setMode('summary',this);closeMobDrawer();document.getElementById('bnav-home').click()">
+          <span class="micon">📋</span><div><div class="mlabel">Key Points</div><div class="msub">Concise revision notes</div></div>
+        </button>
+      </div>
+      <div style="margin-top:1rem;padding:10px 13px;background:var(--surface2);border-radius:9px;font-size:13px;color:var(--muted)">
+        Current: <span style="color:var(--accent);font-weight:600">${mode.charAt(0).toUpperCase()+mode.slice(1)}</span> · 
+        <span style="color:var(--text)">${subject}</span> · 
+        <span>${level}</span>
+      </div>`;
+    openMobDrawer();
+  }
+
+  if (tab === 'sets') {
+    if (!currentUser) {
+      panel.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--muted)">
+        <div style="font-size:36px;margin-bottom:10px">💾</div>
+        <p style="margin-bottom:1rem">Sign in to save and access your flashcard sets</p>
+        <button class="gen-btn" onclick="closeMobDrawer();openAuth()">Sign In</button>
+      </div>`;
+    } else if (!isPro()) {
+      panel.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--muted)">
+        <div style="font-size:36px;margin-bottom:10px">⭐</div>
+        <p style="margin-bottom:1rem">Upgrade to Pro to save unlimited flashcard sets</p>
+        <button class="gen-btn" onclick="closeMobDrawer();openPaywall('Saving sets is a Pro feature')">Upgrade to Pro</button>
+      </div>`;
+    } else {
+      panel.innerHTML = `
+        <div class="sh3">Saved Sets</div>
+        ${savedSets.length ? savedSets.map(s=>`
+          <div class="set-item" onclick="loadSet('${s.id}');closeMobDrawer();mobileTab('home')">
+            <div style="flex:1;min-width:0">
+              <div class="set-title">${s.title}</div>
+              <div class="set-meta">${s.subject} · ${s.level} · ${s.cards.length} cards</div>
+            </div>
+            <button class="set-del" onclick="event.stopPropagation();deleteSet('${s.id}');mobileTab('sets')">✕</button>
+          </div>`).join('') : '<div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:13px">No saved sets yet — generate some flashcards and save them!</div>'}`;
+    }
+    openMobDrawer();
+  }
+
+  if (tab === 'account') {
+    panel.innerHTML = `
+      <div class="sh3">Account</div>
+      ${currentUser ? `
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:1rem">
+          <div style="font-size:13px;color:var(--muted);margin-bottom:3px">Signed in as</div>
+          <div style="font-size:14px;font-weight:500;word-break:break-all">${currentUser.email}</div>
+          <div style="margin-top:8px">${isPro() ? '<span class="pro-badge">⭐ Pro</span>' : '<span class="free-pill">Free Plan</span>'}</div>
+        </div>
+        ${!isPro() ? `<button class="gen-btn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="closeMobDrawer();openPaywall('upgrade')">⭐ Upgrade to Pro — £4.99/mo</button>` : ''}
+        <button class="nbtn" style="width:100%;text-align:center;padding:10px;margin-bottom:10px" onclick="openSettings();closeMobDrawer()">⚙️ Settings</button>
+        <button class="nbtn" style="width:100%;text-align:center;padding:10px;color:var(--red);border-color:rgba(239,68,68,.3)" onclick="doSignOut();closeMobDrawer()">Sign Out</button>
+      ` : `
+        <div style="text-align:center;padding:1.5rem 0">
+          <div style="font-size:36px;margin-bottom:10px">👤</div>
+          <p style="color:var(--muted);margin-bottom:1rem;font-size:13px">Sign in to save progress and access Pro features</p>
+          <button class="gen-btn" style="width:100%;justify-content:center" onclick="closeMobDrawer();openAuth()">Sign In / Sign Up</button>
+        </div>
+      `}`;
+    openMobDrawer();
+  }
+}
+
+function renderMobSubjects(f='') {
+  const c = document.getElementById('mob-subj-cats');
+  if (!c) return;
+  c.innerHTML = '';
+  const fl = f ? f.toLowerCase() : '';
+  Object.entries(SD).forEach(([cat, subs]) => {
+    const list = subs.filter(s => {
+      if (level==='GCSE' && s.a) return false;
+      if (level==='A-Level' && s.g) return false;
+      return !fl || s.n.toLowerCase().includes(fl);
+    });
+    if (!list.length) return;
+    const d = document.createElement('div');
+    d.style.marginBottom = '10px';
+    d.innerHTML = `<div class="scat-label">${cat}</div><div class="scat-grid">${list.map(s=>`
+      <button class="sbtn${s.n===subject?' active':''}" onclick="pickSubject('${s.n.replace(/'/g,"\'")}',this);document.getElementById('sp-sub').textContent='${s.n.replace(/'/g,"\'")}';closeMobDrawer();mobileTab('home')">
+        <span class="si">${s.i}</span>${s.n}
+      </button>`).join('')}</div>`;
+    c.appendChild(d);
+  });
+}
+
+function openMobDrawer() {
+  document.getElementById('mob-drawer').classList.add('open');
+}
+function closeMobDrawer(e) {
+  if (e && e.target !== document.getElementById('mob-drawer') && e.target !== document.querySelector('.mob-drawer-bg')) return;
+  document.getElementById('mob-drawer').classList.remove('open');
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('bnav-home').classList.add('active');
+}
+
 // ─── INIT ────────────────────────────────────────────────────────────────────
 // Load libraries after DOM ready
 window.addEventListener('load', ()=>{
@@ -1215,10 +1416,137 @@ window.addEventListener('load', ()=>{
   // Check if returning from Stripe redirect
   checkReturnPayment();
 });
-</script>
 
+// ─── MOBILE NAV ──────────────────────────────────────────────────────────────
+function mobileTab(tab) {
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('bnav-'+tab);
+  if (btn) btn.classList.add('active');
+  if (tab === 'home') { closeMobDrawer(); return; }
+  const panel = document.getElementById('mob-drawer-content');
+
+  if (tab === 'subjects') {
+    panel.innerHTML = `
+      <div class="sh3" style="margin-bottom:.5rem">Level</div>
+      <div class="level-toggle" style="margin-bottom:1rem">
+        <button class="lvl-btn${level==='GCSE'?' active':''}" onclick="setLevel('GCSE',this);renderMobSubjs()">GCSE</button>
+        <button class="lvl-btn${level==='A-Level'?' active':''}" onclick="setLevel('A-Level',this);renderMobSubjs()">A-Level</button>
+      </div>
+      <div class="sh3" style="margin-bottom:.5rem">Exam Board</div>
+      <select class="esel" style="margin-bottom:1rem" onchange="examBoard=this.value;document.getElementById('sp-board').textContent=this.value">
+        ${['AQA','Edexcel','OCR','WJEC','Cambridge (CAIE)','Eduqas'].map(b=>`<option${examBoard===b?' selected':''}>${b}</option>`).join('')}
+      </select>
+      <div class="sh3" style="margin-bottom:.5rem">Subject</div>
+      <input class="subj-search" type="text" placeholder="Search…" oninput="renderMobSubjs(this.value)" style="margin-bottom:8px">
+      <div id="mob-subj-cats" style="max-height:55vh;overflow-y:auto"></div>`;
+    renderMobSubjs();
+    openMobDrawer();
+  }
+
+  if (tab === 'modes') {
+    panel.innerHTML = `
+      <div class="sh3" style="margin-bottom:.5rem">Study Mode</div>
+      <div class="mode-list">
+        ${[
+          {m:'flashcards',icon:'🃏',label:'Flashcards',sub:'Q&A from your notes',pro:false},
+          {m:'quiz',icon:'🎯',label:'Practice Quiz',sub:'MCQs with explanations',pro:false},
+          {m:'essay',icon:'✍️',label:'Essay Feedback',sub:'Mark scheme analysis',pro:true},
+          {m:'summary',icon:'📋',label:'Key Points',sub:'Concise revision notes',pro:false},
+        ].map(({m,icon,label,sub,pro})=>`
+          <button class="mbtn${mode===m?' active':''}" onclick="${pro?`handleProMode('${m}',this)`:`setMode('${m}',this)`};closeMobDrawer();mobileTab('home')">
+            <span class="micon">${icon}</span>
+            <div><div class="mlabel">${label}</div><div class="msub">${sub}</div></div>
+            ${pro?'<span class="pro-lock">PRO</span>':''}
+          </button>`).join('')}
+      </div>
+      <div style="margin-top:1rem;padding:10px 13px;background:var(--surface2);border-radius:9px;font-size:13px;color:var(--muted)">
+        Now: <b style="color:var(--text)">${mode}</b> · <b style="color:var(--accent)">${subject}</b> · ${level}
+      </div>`;
+    openMobDrawer();
+  }
+
+  if (tab === 'saved') {
+    if (!currentUser) {
+      panel.innerHTML = `<div style="text-align:center;padding:2rem 1rem">
+        <div style="font-size:40px;margin-bottom:12px">💾</div>
+        <p style="color:var(--muted);margin-bottom:1.25rem;font-size:14px">Sign in to save and access your flashcard sets</p>
+        <button class="gen-btn" style="width:100%;justify-content:center" onclick="closeMobDrawer();openAuth()">Sign In / Sign Up</button>
+      </div>`;
+    } else if (!isPro()) {
+      panel.innerHTML = `<div style="text-align:center;padding:2rem 1rem">
+        <div style="font-size:40px;margin-bottom:12px">⭐</div>
+        <p style="color:var(--muted);margin-bottom:1.25rem;font-size:14px">Upgrade to Pro to save unlimited flashcard sets</p>
+        <button class="gen-btn" style="width:100%;justify-content:center" onclick="closeMobDrawer();openPaywall('Saving sets is a Pro feature')">Upgrade to Pro — £4.99/mo</button>
+      </div>`;
+    } else {
+      panel.innerHTML = `
+        <div class="sh3" style="margin-bottom:.75rem">Saved Sets (${savedSets.length})</div>
+        ${savedSets.length ? savedSets.map(s=>`
+          <div class="set-item" onclick="loadSet('${s.id}');closeMobDrawer();mobileTab('home')">
+            <div style="flex:1;min-width:0">
+              <div class="set-title">${s.title}</div>
+              <div class="set-meta">${s.subject} · ${s.level} · ${s.cards.length} cards</div>
+            </div>
+            <button class="set-del" onclick="event.stopPropagation();deleteSet('${s.id}');mobileTab('saved')">✕</button>
+          </div>`).join('')
+          : '<div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:13px">No saved sets yet</div>'}`;
+    }
+    openMobDrawer();
+  }
+
+  if (tab === 'account') {
+    panel.innerHTML = currentUser ? `
+      <div class="sh3" style="margin-bottom:.75rem">Account</div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:1rem">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:3px">Signed in as</div>
+        <div style="font-size:14px;font-weight:500;word-break:break-all;margin-bottom:8px">${currentUser.email}</div>
+        ${isPro() ? '<span class="pro-badge">⭐ Pro</span>' : '<span class="free-pill">Free Plan — <b>'+Math.max(0,FREE_MAX-freeUsed)+' left today</b></span>'}
+      </div>
+      ${!isPro() ? `<button class="gen-btn" style="width:100%;justify-content:center;margin-bottom:10px" onclick="closeMobDrawer();openPaywall('upgrade')">⭐ Upgrade to Pro — £4.99/mo</button>` : ''}
+      <button class="nbtn" style="width:100%;text-align:center;padding:10px;margin-bottom:8px;display:block" onclick="openSettings();closeMobDrawer()">⚙️ Settings</button>
+      <button class="nbtn" style="width:100%;text-align:center;padding:10px;color:var(--red);border-color:rgba(239,68,68,.3);display:block" onclick="doSignOut();closeMobDrawer()">Sign Out</button>
+    ` : `
+      <div style="text-align:center;padding:2rem 1rem">
+        <div style="font-size:40px;margin-bottom:12px">👤</div>
+        <p style="color:var(--muted);margin-bottom:1.25rem;font-size:14px">Sign in to save progress and unlock Pro features</p>
+        <button class="gen-btn" style="width:100%;justify-content:center" onclick="closeMobDrawer();openAuth()">Sign In / Sign Up</button>
+      </div>`;
+    openMobDrawer();
+  }
+}
+
+function renderMobSubjs(f='') {
+  const c = document.getElementById('mob-subj-cats'); if (!c) return;
+  c.innerHTML = '';
+  const fl = f.toLowerCase();
+  Object.entries(SD).forEach(([cat,subs]) => {
+    const list = subs.filter(s => {
+      if (level==='GCSE'&&s.a) return false;
+      if (level==='A-Level'&&s.g) return false;
+      return !fl||s.n.toLowerCase().includes(fl);
+    });
+    if (!list.length) return;
+    const d = document.createElement('div');
+    d.style.marginBottom = '10px';
+    d.innerHTML = `<div class="scat-label">${cat}</div><div class="scat-grid">${list.map(s=>`
+      <button class="sbtn${s.n===subject?' active':''}" onclick="pickSubject('${s.n.replace(/'/g,"\'")}',this);document.getElementById('sp-sub').textContent='${s.n.replace(/'/g,"\'")}';closeMobDrawer();mobileTab('home')">
+        <span class="si">${s.i}</span>${s.n}
+      </button>`).join('')}</div>`;
+    c.appendChild(d);
+  });
+}
+
+function openMobDrawer() { document.getElementById('mob-drawer').classList.add('open'); }
+function closeMobDrawer() {
+  document.getElementById('mob-drawer').classList.remove('open');
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bnav-home').classList.add('active');
+}
+
+</script>
 <!-- Load libraries async - safe order -->
 <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 </body>
 </html>

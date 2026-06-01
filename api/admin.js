@@ -9,7 +9,10 @@ function supabaseRequest(method, path, body) {
     const bodyString = body ? JSON.stringify(body) : '';
     const bodyBuffer = Buffer.from(bodyString, 'utf8');
     const url = new URL(SUPABASE_URL);
-    const key = SUPABASE_SERVICE_KEY.trim();
+
+    // Build headers as a plain object with only ASCII values
+    const key = Buffer.from(SUPABASE_SERVICE_KEY, 'utf8').toString('ascii');
+    const authHeader = Buffer.from('Bearer ' + SUPABASE_SERVICE_KEY, 'utf8').toString('latin1');
 
     const options = {
       hostname: url.hostname,
@@ -17,8 +20,8 @@ function supabaseRequest(method, path, body) {
       method,
       headers: {
         'Content-Type': 'application/json',
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
+        'apikey': SUPABASE_SERVICE_KEY.trim(),
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY.trim()}`,
         'Prefer': 'return=representation',
         'Content-Length': bodyBuffer.length,
       },
