@@ -793,48 +793,46 @@ async function handleAuth() {
   btn.disabled=false; btn.textContent=authMode==='signup'?'Create Account':'Sign In';
 }
 async function doSignOut() {
-  localStorage.removeItem('sb_access_token');
-  localStorage.removeItem('sb_refresh_token');
-  localStorage.removeItem('sb_user');
-  localStorage.removeItem('freeUsed');
+  // Clear everything from localStorage first
+  localStorage.clear();
+  // Sign out from Supabase
   if (sb) { try { await sb.auth.signOut(); } catch(e) {} }
+  // Reset all state
   currentUser=null; userProfile=null;
   savedSets=[]; cardProgress={}; freeUsed=0;
-  closeM('m-settings');
-  closeMobDrawer();
-  refreshUI();
-  document.getElementById('sets-list').innerHTML='<div class="empty-sets">Sign in & upgrade to save sets</div>';
-  document.getElementById('auth-nav-btn').textContent='Sign in';
-  document.getElementById('nav-badge').innerHTML='';
-  document.getElementById('upgrade-nav-btn').style.display='none';
-  document.getElementById('pro-banner').style.display='block';
-  toast('Signed out successfully','success');
+  // Close any open modals safely
+  try { closeM('m-settings'); } catch(e) {}
+  try { document.getElementById('mob-drawer').classList.remove('open'); } catch(e) {}
+  // Reload the page — cleanest possible sign out on all browsers
+  window.location.reload();
 }
 
 // ─── PROFILE ────────────────────────────────────────────────────────────────
 async function loadProfile() {
   if (!currentUser) { refreshUI(); return; }
-  // Set a basic profile immediately so UI updates right away
+  // Set basic profile immediately so UI shows something
   if (!userProfile) {
     userProfile = {id:currentUser.id, email:currentUser.email, is_premium:false, free_generates_used:0};
   }
   refreshUI();
-  // Then try to load real profile from Supabase in background
-  if (!sb) return;
+  // Fetch real profile via our backend — works on ALL browsers including Safari
   try {
-    const {data} = await sb.from('profiles').select('*').eq('id',currentUser.id).single();
-    if (!data) {
-      await sb.from('profiles').insert({id:currentUser.id,email:currentUser.email,is_premium:false,free_generates_used:0});
-      userProfile = {id:currentUser.id,email:currentUser.email,is_premium:false,free_generates_used:0};
-      freeUsed = 0;
-    } else {
-      userProfile = data;
-      // Always use server count when signed in — fixes multi-device issue
-      freeUsed = data.free_generates_used || 0;
-      localStorage.setItem('freeUsed', freeUsed);
+    const token = localStorage.getItem('sb_access_token') || '';
+    const res = await fetch(API_BASE+'/api/profile', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ userId: currentUser.id, token })
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.profile) {
+        userProfile = data.profile;
+        freeUsed = data.profile.free_generates_used || 0;
+        localStorage.setItem('freeUsed', freeUsed);
+      }
     }
   } catch(e) {
-    userProfile = {id:currentUser.id,email:currentUser.email,is_premium:false};
+    // Keep basic profile on error
   }
   refreshUI();
   loadSets().catch(()=>{});
