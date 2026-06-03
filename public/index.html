@@ -254,7 +254,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .fade-in{animation:fi .3s ease}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 /* TOP TABS */
-.app-tabs{display:flex;gap:2px;padding:0 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:54px;z-index:50;overflow-x:auto}
+.app-tabs{display:flex;gap:2px;padding:0 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);overflow-x:auto;flex-shrink:0}
 .app-tab{padding:10px 16px;font-family:var(--ff);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0}
 .app-tab:hover{color:var(--text)}
 .app-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
@@ -692,8 +692,8 @@ textarea:focus{outline:none;border-color:var(--accent)}
   <div class="prog-card" style="margin-bottom:10px">
     <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Exam Countdowns</div>
     <div class="exam-add">
-      <input type="text" id="exam-name-input" placeholder="Exam name e.g. Biology Paper 1">
-      <input type="date" id="exam-date-input" style="width:130px">
+      <input type="text" id="exam-name-input-old" placeholder="Exam name e.g. Biology Paper 1">
+      <input type="date" id="exam-date-input-old" style="width:130px">
       <button onclick="addExam()">+ Add</button>
     </div>
     <div class="exam-list" id="exam-list">
@@ -754,10 +754,11 @@ textarea:focus{outline:none;border-color:var(--accent)}
         <option>AQA</option><option>Edexcel</option><option>OCR</option><option>WJEC</option><option>Cambridge (CAIE)</option><option>Eduqas</option>
       </select>
     </div>
-    <div class="sel-pill">
+    <div class="sel-pill" id="sel-pill" style="cursor:pointer" onclick="switchTab('study')" title="Click to go back to study">
       <span class="sp-level" id="sp-level">A-Level</span><span class="sp-sep">·</span>
       <span class="sp-sub" id="sp-sub">Biology</span><span class="sp-sep">·</span>
       <span class="sp-board" id="sp-board">AQA</span>
+      <span style="font-size:10px;color:var(--accent);margin-left:4px">→ Study</span>
     </div>
     <div class="free-banner" id="pro-banner" onclick="openPaywall('banner')">
       <h4>⭐ Upgrade to Pro</h4>
@@ -814,8 +815,32 @@ textarea:focus{outline:none;border-color:var(--accent)}
     <!-- STUDY TAB -->
     <div class="tab-panel active" id="panel-study" style="overflow:hidden">
       <div class="ipanel">
-        <h2>Paste your notes, <em>get smarter.</em></h2>
-        <p>Add text, upload a PDF, or take a photo of your notes</p>
+        <h2 id="study-heading">Paste your notes, <em>get smarter.</em></h2>
+        <p id="study-subheading">Add text, upload a PDF, or take a photo of your notes</p>
+
+        <!-- ESSAY EXTRA FIELDS - shown only in essay mode -->
+        <div id="essay-fields" style="display:none;margin-bottom:8px">
+          <div style="display:grid;grid-template-columns:1fr auto;gap:7px;margin-bottom:7px">
+            <div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500">Exam question</div>
+              <input type="text" id="essay-question" placeholder="e.g. Explain the causes of World War One" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:8px 11px;color:var(--text);font-family:var(--ff);font-size:13px">
+            </div>
+            <div style="width:80px">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500">Marks</div>
+              <select id="essay-marks" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:8px 9px;color:var(--text);font-family:var(--ff);font-size:13px;appearance:none;cursor:pointer">
+                <option value="4">4</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+                <option value="12">12</option>
+                <option value="16" selected>16</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="upload-row">
           <label class="upbtn" id="pdf-lbl" onclick="checkProFeature(event,'upload')">
             📎 Upload PDF / Image <span class="lock" id="pdf-lock">⭐</span>
@@ -1094,6 +1119,8 @@ function setMode(m,btn) {
   document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   updateCountSelector();
+  // Always switch back to Study tab when selecting a mode
+  switchTab('study');
 }
 function updateCountSelector() {
   const cs = document.getElementById('count-selector');
@@ -1108,6 +1135,26 @@ function updateCountSelector() {
   } else {
     cs.style.display='none';
   }
+  showEssayUI();
+}
+
+function showEssayUI() {
+  const ef = document.getElementById('essay-fields');
+  const heading = document.getElementById('study-heading');
+  const subheading = document.getElementById('study-subheading');
+  const notesEl = document.getElementById('notes');
+  if (!ef) return;
+  if (mode === 'essay') {
+    ef.style.display = 'block';
+    if(heading) heading.innerHTML = 'Essay Feedback <em>— get marked.</em>';
+    if(subheading) subheading.textContent = 'Enter the exam question, marks, and paste your essay answer below';
+    if(notesEl) notesEl.placeholder = 'Paste your essay answer here…';
+  } else {
+    ef.style.display = 'none';
+    if(heading) heading.innerHTML = 'Paste your notes, <em>get smarter.</em>';
+    if(subheading) subheading.textContent = 'Add text, upload a PDF, or take a photo of your notes';
+    if(notesEl) notesEl.placeholder = 'e.g. The cell cycle consists of interphase and mitotic phase…';
+  }
 }
 function setCount(n, btn) {
   window.selectedCount = n;
@@ -1116,7 +1163,13 @@ function setCount(n, btn) {
 }
 function handleProMode(m,btn) {
   if (!canUseProFeature()) { openPaywall('Essay Feedback is a Pro feature'); return; }
-  setMode(m,btn);
+  mode=m;
+  document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updateCountSelector();
+  switchTab('study');
+  // Show essay UI
+  showEssayUI();
 }
 
 // ─── THEME ──────────────────────────────────────────────────────────────────
@@ -1576,6 +1629,35 @@ async function generate() {
   const cardCount = window.selectedCount || 6;
   const quizCount = window.selectedCount || 4;
 
+  function buildEssayPrompt(notes, lc, gs) {
+    const question = document.getElementById('essay-question')?.value?.trim() || '';
+    const marks = document.getElementById('essay-marks')?.value || '16';
+    const questionSection = question
+      ? `Exam question: "${question}"\nMarks available: ${marks}\n\n`
+      : `Marks available: ${marks}\n\n`;
+    return `You are a senior ${subject} examiner for ${lc} with 20 years marking experience.
+
+FIRST: Check if the text is actually an essay/extended written answer. If it is just notes, bullet points, or a list, return ONLY: {"notAnEssay":true,"message":"This looks like notes rather than an essay answer. Please paste your written response to the exam question."}
+
+If it IS a proper written answer, mark it against the ${lc} mark scheme for a ${marks}-mark question and return ONLY valid JSON:
+{"grade":"...","marksAwarded":${marks},"overall":"...","strengths":"...","improvements":"...","examinerComment":"...","markSchemePoints":["point 1 - awarded/not awarded","point 2 - awarded/not awarded"],"scores":{"knowledge":7,"analysis":6,"evaluation":6,"communication":7}}
+
+STRICT marking rules:
+- grade: use ${gs} — grade must match the marks awarded honestly
+- marksAwarded: give a number out of ${marks} — be strict
+- For ${marks} marks: award marks only for valid, relevant points with accurate detail
+- A 16-mark answer needs extended writing with argument, evidence AND evaluation to score above 10
+- Do NOT inflate grades — a short answer cannot score highly
+- overall: 3-4 brutally honest sentences
+- strengths: specific lines from the answer that earned marks
+- improvements: exact advice on what was missing for full marks
+- examinerComment: the comment an examiner writes on the paper
+- markSchemePoints: list each mark scheme point and whether the student hit it
+
+${questionSection}Student answer:
+${notes}`;
+  }
+
   const PROMPTS={
     flashcards:`You are an expert ${subject} teacher for ${lc}. Generate exactly ${cardCount} flashcards as a JSON array. Each object: {"question":"...","answer":"..."}. Pitch difficulty correctly for ${level}. Return ONLY a valid JSON array with no markdown, no explanation.
 
@@ -1585,28 +1667,7 @@ ${notes}`,
 
 Notes:
 ${notes}`,
-    essay:`You are a senior ${subject} examiner for ${lc} with 20 years marking experience.
-
-FIRST check: is the text below actually an essay or extended answer? If it is NOT an essay (e.g. bullet points, short notes, a list, a summary, random sentences), return: {"notAnEssay":true,"message":"This does not appear to be an essay answer. Please paste a proper written response to an exam question for feedback."}
-
-If it IS an essay or extended answer, evaluate it strictly and return ONLY valid JSON:
-{"grade":"...","overall":"...","strengths":"...","improvements":"...","examinerComment":"...","markSchemePoints":["...","...","..."],"scores":{"knowledge":7,"analysis":6,"evaluation":6,"communication":7}}
-
-Grading rules — be strict and accurate:
-- Use ${gs}
-- A/9/8: Exceptional — detailed, accurate, well-structured with strong analysis
-- B/7/6: Good — mostly accurate, some analysis, minor gaps
-- C/5/4: Average — basic understanding, limited analysis, significant gaps
-- D-E/3-1: Below average — major inaccuracies or very limited response
-- Do NOT give high grades for vague or short answers
-- overall: 3-4 honest sentences on quality
-- strengths: quote specific things from the answer that are good
-- improvements: specific, actionable advice tied to ${lc} mark scheme
-- examinerComment: exactly what an examiner would write on the paper
-- markSchemePoints: 3-5 bullet points from the mark scheme — tick or cross each
-
-Student answer:
-${notes}`,
+    essay:buildEssayPrompt(notes, lc, gs),
     summary:`You are an expert ${subject} teacher for ${lc}. Create concise revision notes. Return ONLY valid JSON: {"title":"...","keyPoints":["...","..."],"keyTerms":[{"term":"...","definition":"..."}],"examTip":"..."}.
 
 Notes:
@@ -1665,20 +1726,31 @@ function renderResults(data) {
           <div class="qexp" id="qe-${qi}">💡 ${q.explanation}</div>
         </div>`).join('')}</div>`;
   } else if (mode==='essay') {
-    const gc={'A*':'#22c55e',A:'#22c55e',B:'var(--accent)',C:'var(--amber)',D:'#f97316',E:'var(--red)',9:'#22c55e',8:'#22c55e',7:'var(--accent)',6:'var(--accent)',5:'var(--amber)',4:'var(--amber)',3:'#f97316',2:'var(--red)',1:'var(--red)'}[data.grade]||'var(--accent)';
+    const gc={'A*':'#22c55e',A:'#22c55e',B:'var(--accent)',C:'var(--amber)',D:'#f97316',E:'var(--red)',9:'#22c55e',8:'#22c55e',7:'var(--accent)',6:'var(--accent)',5:'var(--amber)',4:'var(--amber)',3:'#f97316',2:'var(--red)',1:'var(--red)'}[String(data.grade)]||'var(--accent)';
+    const esMarks = document.getElementById('essay-marks')?.value||'16';
+    const esQ = document.getElementById('essay-question')?.value?.trim()||'';
     document.getElementById('results').innerHTML=`
       <div class="rh fade-in"><h2>Essay Feedback</h2><div>${tags()}</div></div>
       <div class="ewrap fade-in">
+        ${esQ?`<div class="fcard"><div class="fh"><h3>Question</h3><span style="font-size:11px;color:var(--muted)">${esMarks} marks</span></div><div class="fb"><p style="font-size:14px;font-style:italic">${esQ}</p></div></div>`:''}
         <div class="fcard">
-          <div class="fh"><h3>Overall Assessment</h3><div class="gbadge" style="color:${gc}">${data.grade}</div></div>
+          <div class="fh">
+            <div>
+              <h3>Overall Grade</h3>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">${data.marksAwarded!=null?data.marksAwarded+'/'+esMarks+' marks':''}</div>
+            </div>
+            <div class="gbadge" style="color:${gc};font-size:1.8rem">${data.grade}</div>
+          </div>
           <div class="fb">
-            <div class="fs"><p>${data.overall}</p></div>
-            <div class="fs"><h4>Scores</h4><div class="sbars">${Object.entries(data.scores).map(([k,v])=>`
+            <div class="fs"><p style="font-size:14px;line-height:1.8">${data.overall}</p></div>
+            <div class="fs"><h4>Scores</h4><div class="sbars">${Object.entries(data.scores||{}).map(([k,v])=>`
               <div class="sbar"><div class="sbar-label">${k[0].toUpperCase()+k.slice(1)}</div>
-              <div class="sbar-bg"><div class="sbar-fill" style="width:${v*10}%"></div></div>
+              <div class="sbar-bg"><div class="sbar-fill" style="width:${v*10}%;background:${v>=8?'var(--green)':v>=6?'var(--accent)':v>=4?'var(--amber)':'var(--red)'}"></div></div>
               <div class="sbar-val">${v}/10</div></div>`).join('')}</div></div>
-            <div class="fs"><h4>✓ Strengths</h4><p>${data.strengths}</p></div>
-            <div class="fs"><h4>↑ Improvements</h4><p>${data.improvements}</p></div>
+            <div class="fs"><h4>✓ Strengths</h4><p style="font-size:14px;line-height:1.8">${data.strengths}</p></div>
+            <div class="fs"><h4>↑ How to improve</h4><p style="font-size:14px;line-height:1.8">${data.improvements}</p></div>
+            ${data.markSchemePoints?`<div class="fs"><h4>Mark Scheme Points</h4><ul style="padding-left:1.2rem;font-size:14px;line-height:2">${(data.markSchemePoints||[]).map(p=>`<li>${p}</li>`).join('')}</ul></div>`:''}
+            ${data.examinerComment?`<div class="fs" style="background:var(--surface2);border-radius:9px;padding:12px 14px;border-left:3px solid var(--amber)"><h4 style="color:var(--amber)">Examiner Comment</h4><p style="font-size:14px;line-height:1.8;margin-top:6px;font-style:italic">"${data.examinerComment}"</p></div>`:''}
           </div>
         </div>
       </div>`;
