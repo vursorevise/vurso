@@ -98,8 +98,8 @@ nav.topnav{display:flex;align-items:center;justify-content:space-between;padding
 .scard-label{font-size:11px;color:var(--muted);margin-top:1px}
 
 /* MAIN */
-.main{display:flex;flex-direction:column;overflow:hidden}
-.ipanel{padding:1.1rem 1.5rem .9rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.main{display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.ipanel{padding:1.1rem 1.5rem .9rem;border-bottom:1px solid var(--border);flex-shrink:0;overflow:visible}
 .ipanel h2{font-family:var(--fd);font-size:1.4rem;font-weight:400;margin-bottom:2px}
 .ipanel h2 em{color:var(--accent);font-style:italic}
 .ipanel p{color:var(--muted);font-size:13px;margin-bottom:.65rem}
@@ -122,7 +122,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .upload-status .spin{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
 
 /* RESULTS */
-.rpanel{flex:1;overflow-y:auto;padding:1.25rem 1.5rem}
+.rpanel{flex:1;overflow-y:auto;padding:1.25rem 1.5rem;min-height:0}
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;text-align:center}
 .empty-icon{font-size:36px;opacity:.2}
 .empty h3{font-family:var(--fd);font-size:1.2rem;font-weight:400;opacity:.35}
@@ -259,55 +259,10 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .app-tab:hover{color:var(--text)}
 .app-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .tab-panel{display:none}
-.tab-panel.active{display:flex;flex-direction:column;flex:1;overflow:hidden}
-
-/* TIMETABLE PANEL */
-.tt-panel{padding:1.25rem 1.5rem;overflow-y:auto;flex:1}
-.tt-setup{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:1rem}
-.tt-setup h3{font-family:var(--fd);font-size:1.2rem;font-weight:400;margin-bottom:4px}
-.tt-setup p{font-size:13px;color:var(--muted);margin-bottom:1rem}
-.tt-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.tt-form-grid input,.tt-form-grid select{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:8px 11px;color:var(--text);font-family:var(--ff);font-size:13px;width:100%}
-.tt-form-grid input:focus,.tt-form-grid select:focus{outline:none;border-color:var(--accent)}
-.exam-add-row{display:flex;gap:6px;margin-bottom:8px;align-items:center}
-.exam-add-row input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:8px 11px;color:var(--text);font-family:var(--ff);font-size:13px}
-.exam-add-row input:focus{outline:none;border-color:var(--accent)}
-.exam-add-row input[type=date]{width:140px;flex:none}
-.exam-add-row .add-btn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:8px 14px;font-family:var(--ff);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.exam-add-row .add-btn:hover{background:#6a4ef0}
-.exams-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.exam-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 13px;display:flex;align-items:center;gap:12px}
-.exam-card-info{flex:1}
-.exam-card-name{font-size:14px;font-weight:500}
-.exam-card-date{font-size:12px;color:var(--muted);margin-top:1px}
-.exam-card-days{text-align:right}
-.exam-card-num{font-size:22px;font-family:var(--fd);font-weight:600}
-.exam-card-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.exam-card-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:3px 6px;border-radius:5px}
-.exam-card-del:hover{color:var(--red);background:rgba(239,68,68,.1)}
-.gen-tt-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px;font-family:var(--ff);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.gen-tt-btn:hover{background:#6a4ef0}
-.tt-week{margin-top:1rem}
-.tt-week-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.tt-day-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden}
-.tt-day-hd{padding:10px 14px;background:var(--surface2);display:flex;align-items:center;justify-content:space-between}
-.tt-day-hd-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
-.tt-today-pill{background:var(--accent);color:#fff;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:700}
-.tt-day-hd-date{font-size:11px;color:var(--muted)}
-.tt-session-row{padding:10px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;transition:background .15s}
-.tt-session-row:hover{background:var(--surface2)}
-.tt-session-row.completed{opacity:.45}
-.tt-chk{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;font-size:12px}
-.tt-chk.done{background:var(--green);border-color:var(--green);color:#fff}
-.tt-sess-subj{flex:1;font-size:14px;font-weight:500}
-.tt-sess-meta{font-size:11px;color:var(--muted);text-align:right}
-.tt-sess-time{font-size:12px;color:var(--muted)}
-.tt-rest{padding:12px 14px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.tt-progress-bar{height:3px;background:var(--surface2)}
-.tt-progress-fill{height:3px;background:var(--green);transition:width .3s}
+.tab-panel.active{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
 
 /* PROGRESS PANEL */
-.prog-panel{padding:1.25rem 1.5rem;overflow-y:auto;flex:1}
+.prog-panel{padding:1.25rem 1.5rem;overflow-y:auto;flex:1;min-height:0}
 .prog-top-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px}
 .prog-mini{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 12px;text-align:center}
 .prog-mini-val{font-size:22px;font-family:var(--fd)}
@@ -808,12 +763,11 @@ textarea:focus{outline:none;border-color:var(--accent)}
     <!-- TOP TABS -->
     <div class="app-tabs">
       <button class="app-tab active" id="tab-study" onclick="switchTab('study')">✦ Study</button>
-      <button class="app-tab" id="tab-timetable" onclick="switchTab('timetable')">📅 Timetable</button>
       <button class="app-tab" id="tab-progress" onclick="switchTab('progress')">📊 Progress</button>
     </div>
 
     <!-- STUDY TAB -->
-    <div class="tab-panel active" id="panel-study" style="overflow:hidden">
+    <div class="tab-panel active" id="panel-study" style="overflow:hidden;min-height:0">
       <div class="ipanel">
         <h2 id="study-heading">Paste your notes, <em>get smarter.</em></h2>
         <p id="study-subheading">Add text, upload a PDF, or take a photo of your notes</p>
@@ -886,56 +840,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
       </div>
     </div>
 
-    <!-- TIMETABLE TAB -->
-    <div class="tab-panel" id="panel-timetable">
-      <div class="tt-panel">
-
-        <!-- EXAM SETUP -->
-        <div class="tt-setup">
-          <h3>📅 Your Exams</h3>
-          <p>Add your exam dates and we'll build your revision timetable automatically</p>
-          <div class="exam-add-row">
-            <input type="text" id="exam-name-input" placeholder="e.g. Biology Paper 1">
-            <input type="date" id="exam-date-input">
-            <button class="add-btn" onclick="addExam()">+ Add Exam</button>
-          </div>
-          <div class="exams-list" id="exams-list-main">
-            <div style="font-size:13px;color:var(--muted);padding:8px 0">No exams added yet — add one above to get started</div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-            <div>
-              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500">Daily study goal</div>
-              <select id="daily-goal-select" class="esel" onchange="localStorage.setItem('daily_goal',this.value)">
-                <option value="1">1 session/day</option>
-                <option value="2">2 sessions/day</option>
-                <option value="3" selected>3 sessions/day</option>
-                <option value="4">4 sessions/day</option>
-                <option value="5">5 sessions/day</option>
-              </select>
-            </div>
-            <div>
-              <div style="font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500">Session length</div>
-              <select id="session-len-select" class="esel">
-                <option value="30">30 minutes</option>
-                <option value="45" selected>45 minutes</option>
-                <option value="60">1 hour</option>
-                <option value="90">1.5 hours</option>
-              </select>
-            </div>
-          </div>
-          <button class="gen-tt-btn" onclick="generateTimetable()">🗓️ Generate My Revision Timetable</button>
-        </div>
-
-        <!-- TIMETABLE OUTPUT -->
-        <div class="tt-week" id="tt-week-output" style="display:none">
-          <div class="tt-week-title">This Week's Revision Plan</div>
-          <div id="tt-days-container"></div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- PROGRESS TAB -->
+        <!-- PROGRESS TAB -->
     <div class="tab-panel" id="panel-progress">
       <div class="prog-panel" id="prog-panel-content">
         <div class="prog-top-row">
@@ -979,6 +884,17 @@ textarea:focus{outline:none;border-color:var(--accent)}
         <div class="prog-card" style="margin-bottom:10px">
           <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Subject Breakdown</div>
           <div id="prog-subj-list"><div style="font-size:13px;color:var(--muted);text-align:center;padding:.5rem">Generate flashcards to see subject progress</div></div>
+        </div>
+
+        <!-- EXAM COUNTDOWNS -->
+        <div class="prog-card" style="margin-bottom:10px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Exam Countdowns</div>
+          <div class="exam-add-row" style="margin-bottom:10px">
+            <input type="text" id="exam-name-input" placeholder="e.g. Biology Paper 1">
+            <input type="date" id="exam-date-input">
+            <button class="add-btn" onclick="addExam()">+ Add</button>
+          </div>
+          <div id="exams-list-main"></div>
         </div>
 
         <!-- BADGES -->
@@ -1707,6 +1623,11 @@ ${notes}`
 function tags(){ return `<span class="tag a">${subject}</span><span class="tag l">${level}</span><span class="tag">${examBoard}</span>`; }
 
 function renderResults(data) {
+  // Scroll to results after rendering
+  setTimeout(()=>{
+    const r = document.getElementById('results');
+    if(r) r.scrollTop = 0;
+  }, 50);
   if (mode==='flashcards') {
     statCards+=data.length; document.getElementById('stat-cards').textContent=statCards;
     currentCards=data; renderCards(data,null);
@@ -1921,10 +1842,11 @@ function checkBadges(stats) {
 function switchTab(tab) {
   document.querySelectorAll('.app-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  document.getElementById('panel-'+tab).classList.add('active');
+  const tabEl = document.getElementById('tab-'+tab);
+  const panelEl = document.getElementById('panel-'+tab);
+  if(tabEl) tabEl.classList.add('active');
+  if(panelEl) panelEl.classList.add('active');
   if (tab==='progress') refreshProgressPanel();
-  if (tab==='timetable') { renderExamsMain(); renderTimetableMain(); }
 }
 
 function openProgress() { switchTab('progress'); }
@@ -2003,9 +1925,12 @@ function refreshProgressPanel() {
       </div>`).join('')+'</div>';
   }
 
+  // Exam countdowns
+  renderExamsMain();
+
   // Badges
   const badgesGrid=document.getElementById('prog-badges-grid');
-  badgesGrid.innerHTML=BADGES.map(b=>`
+  if(badgesGrid) badgesGrid.innerHTML=BADGES.map(b=>`
     <div class="badge-item ${earned.includes(b.id)?'earned':'locked'}" title="${b.desc}">
       <div class="badge-icon">${b.icon}</div>
       <div class="badge-name">${b.name}</div>
@@ -2177,9 +2102,6 @@ function initStats() {
   const el2 = document.getElementById('stat-total-gen');
   if(el1) el1.textContent = '🔥 '+(stats.streak||0);
   if(el2) el2.textContent = stats.totalSessions||0;
-  // Set daily goal select
-  const goalSel = document.getElementById('daily-goal-select');
-  if(goalSel) goalSel.value = localStorage.getItem('daily_goal')||'3';
 }
 
 // ─── MOBILE NAV ──────────────────────────────────────────────────────────────
